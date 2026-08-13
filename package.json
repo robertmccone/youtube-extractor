@@ -1,0 +1,19 @@
+{
+  "name": "youtube-extractor",
+  "version": "0.1.1",
+  "private": true,
+  "license": "MIT",
+  "description": "Monorepo for the YouTube Extractor backend and web frontend",
+  "workspaces": [
+    "yt-dlp-backend",
+    "yt-dlp-frontend"
+  ],
+  "scripts": {
+    "build": "npm run build --workspace yt-dlp-frontend",
+    "start": "npm run start --workspace yt-dlp-backend",
+    "dev": "npm run dev --workspace yt-dlp-frontend",
+    "lint": "npm run lint --workspace yt-dlp-frontend",
+    "update": "npm update --workspaces --include-workspace-root",
+    "outdated": "npm outdated --workspaces --include-workspace-root"
+  }
+}

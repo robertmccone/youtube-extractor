@@ -1,0 +1,8 @@
+# Downloaded media — keep the directory structure, ignore the contents.
+# index.js also recreates these dirs on startup.
+downloads/*
+!downloads/mp3/
+!downloads/video/
+!downloads/chapters/
+downloads/*/*
+!downloads/*/.gitkeep
