@@ -30,6 +30,13 @@ const CHAPTERS_DIR = path.join(DOWNLOADS_DIR, 'chapters');
   fs.mkdirSync(dir, { recursive: true });
 });
 
+// Additional yt-dlp args to get around being blocked
+// TODO this is a temporary hack for sure, need to refactor
+// the building of the yt-dlp cmd into a function and 
+// allow for intelligent retries and adjustments when 
+// blocked, including waits and such
+const ADDITIONAL_ARGS = `--extractor-args "youtube:player_client=web_embedded,web,tv"`;
+
 // Middleware
 app.use(express.json());
 
@@ -182,7 +189,7 @@ app.post('/api/getmp3', (req, res) => {
   }
   const outputPath = path.join(MP3_DIR, `${requestId}.mp3`);
 
-  const downloadCmd = `yt-dlp -x --audio-format mp3 -o "${outputPath}" --js-runtimes node "${ytUrl}"`;
+  const downloadCmd = `yt-dlp -x --audio-format mp3 -o "${outputPath}" ${ADDITIONAL_ARGS} --js-runtimes node "${ytUrl}"`;
 
   exec(downloadCmd, { maxBuffer: 10 * 1024 * 1024 }, (dlErr) => {
     if (dlErr) {
@@ -258,7 +265,7 @@ app.post('/api/getmp3chapters', (req, res) => {
   fs.mkdirSync(chapterDir, { recursive: true });
 
   const outputTemplate = path.join(chapterDir, '%(section_number)03d.%(ext)s');
-  const downloadCmd = `yt-dlp -x --audio-format mp3 --split-chapters -o "chapter:${outputTemplate}" --js-runtimes node --exec "post_process:rm" "${ytUrl}"`;
+  const downloadCmd = `yt-dlp -x --audio-format mp3 --split-chapters -o "chapter:${outputTemplate}" ${ADDITIONAL_ARGS} --js-runtimes node --exec "post_process:rm" "${ytUrl}"`;
 
   exec(downloadCmd, { maxBuffer: 10 * 1024 * 1024 }, (dlErr) => {
     if (dlErr) {
@@ -372,7 +379,7 @@ app.post('/api/getvideo', (req, res) => {
   // Async download
   const ytUrl = `https://www.youtube.com/watch?v=${videoId}`;
   const outputPath = path.join(VIDEO_DIR, `${requestId}.%(ext)s`);
-  const downloadCmd = `yt-dlp -f "${formatSelector}" --merge-output-format mp4 -o "${outputPath}" --js-runtimes node "${ytUrl}"`;
+  const downloadCmd = `yt-dlp -f "${formatSelector}" --merge-output-format mp4 -o "${outputPath}" ${ADDITIONAL_ARGS} --js-runtimes node "${ytUrl}"`;
 
   exec(downloadCmd, { maxBuffer: 10 * 1024 * 1024 }, (dlErr) => {
     if (dlErr) {
