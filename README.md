@@ -195,6 +195,20 @@ Handy links for exercising both paths:
   `a-z A-Z 0-9 _ - . , ( )` and spaces are stripped from titles, artists, and albums.
 - Downloads run as unbounded concurrent child processes; there is no queue or rate limit.
 
+## Known Issues and Possible Feature Additions
+
+This app was originally slopped together when agents weren't as good as they are now, might be 
+worth a rewrite.
+
+- There is no way to see existing files for download once you've left the finished page. A default 
+viewer with TTLs on each file and a search might be handy.
+- UI is clunky, again later models are doing a much better job of this.
+- Could add ability to chunk long form vids that don't have chapters, this might be handy for 
+things like podcasts which don't add chapters, for example.
+- Could integrate yt-dlp with sponsorblock, would need to include the custom ffmpeg dependency and 
+workflow for setting that up on the machine.
+- The ability to search YT for a vid from the app instead of having to get the url from youtube would 
+be helpful, especially since YT makes mobile difficult and the app even more so.
 ## License
 
 MIT
